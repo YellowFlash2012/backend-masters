@@ -3,8 +3,12 @@ import { config } from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan"
 import colors from "colors"
+
+
 import bootcampRoutes from "./routes/v1/bootcamps.js";
 import connectDB from "./config/db.js";
+import { errorHandler, notFound } from "./middlewares/error.js";
+
 
 config()
 
@@ -26,6 +30,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/bootcamps", bootcampRoutes);
 
+app.use(notFound)
+app.use(errorHandler)
 
 connectDB()
 app.listen(port, () => {
