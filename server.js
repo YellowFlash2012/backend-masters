@@ -6,6 +6,8 @@ import colors from "colors"
 
 
 import bootcampRoutes from "./routes/v1/bootcamps.js";
+import courseRoutes from "./routes/v1/courses.js";
+
 import connectDB from "./config/db.js";
 import { errorHandler, notFound } from "./middlewares/error.js";
 
@@ -29,6 +31,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/api/v1/bootcamps", bootcampRoutes);
+app.use("/api/v1/courses", courseRoutes);
 
 app.use(notFound)
 app.use(errorHandler)
