@@ -6,6 +6,7 @@ import colors from "colors"
 
 import connectDB from "./config/db.js"
 import Bootcamp from "./models/Bootcamp.js"
+import Course from "./models/Course.js";
 
 config()
 
@@ -17,12 +18,18 @@ const importData = async () => {
         await connectDB(process.env.MONGO_URI)
 
         await Bootcamp.deleteMany()
+        await Course.deleteMany()
 
         const bootcamps = JSON.parse(
             await readFile(new URL("./_data/bootcamps.json", import.meta.url))
         );
+        
+        const courses = JSON.parse(
+            await readFile(new URL("./_data/courses.json", import.meta.url))
+        );
 
         await Bootcamp.create(bootcamps);
+        await Course.create(courses);
 
         console.log('Data imported...'.green.inverse);
 
@@ -36,6 +43,7 @@ const importData = async () => {
 const deleteData = async () => {
     try {
         await Bootcamp.deleteMany();
+        await Course.deleteMany()
 
         console.log("Data destroyed...".red.inverse);
 
