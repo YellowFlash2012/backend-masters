@@ -1,5 +1,5 @@
 import express from "express";
-import { addNewBootcamp, deleteOneBootcamp, getAllBootcamps, getOneBootcamp, updateOneBootcamp } from "../../controllers/v1/bootcamps.js";
+import { addNewBootcamp, deleteOneBootcamp, getAllBootcamps, getBootcampsWithinRadius, getOneBootcamp, updateOneBootcamp } from "../../controllers/v1/bootcamps.js";
 
 const router = express.Router();
 
@@ -12,5 +12,7 @@ router.post("/", addNewBootcamp)
 router.put("/:id", updateOneBootcamp)
 
 router.delete("/:id", deleteOneBootcamp)
+
+router.get("/radius/:zipcode/:distance", getBootcampsWithinRadius)
 
 export default router

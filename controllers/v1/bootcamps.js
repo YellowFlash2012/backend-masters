@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler"
 
 import Bootcamp from "../../models/Bootcamp.js"
+import geocoder from "../../utils/geocoder.js";
 
 
 // @desc    Get all bootcamps
@@ -62,5 +63,27 @@ export const deleteOneBootcamp = asyncHandler( async (req, res) => {
         return res.status(404).json({ success: false });
     }
 
-    res.status(201).json({ success: true });
+    res.status(200).json({ success: true });
+})
+
+// @desc    Get a bootcamp with certain radius
+// @route   GET /api/v1/bootcamps/:zipcode/:distance
+// @access  Private/Admin
+export const getBootcampsWithinRadius = asyncHandler(async (req, res) => {
+    
+    const { zipcode, distance } = req.params;
+
+    // get lat and lng from geocoder
+    const loc = await geocoder.geocode(zipcode);
+    const lat = loc[0].latitude;
+    const lng = loc[0].longitude;
+    
+    // earth radius = 3,963 mi / 6,378 km
+    const radius = distance / 3963;
+
+    const bootcamps = await Bootcamp.find({
+        location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
+    });
+
+    res.status(200).json({ success: true, count:bootcamps.length,data:bootcamps });
 })
