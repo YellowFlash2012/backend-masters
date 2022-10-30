@@ -130,7 +130,7 @@ bootcampSchema.pre('save', async function (next) {
 bootcampSchema.pre('remove', async function (next) {
     console.log(`courses being removed from bootcamp ${this._id}`);
     await this.model('Course').deleteMany({ bootcamp: this._id });
-    next()
+    next() 
 })
 
 // ***reverse populate with virtuals
