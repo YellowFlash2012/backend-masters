@@ -1,8 +1,11 @@
 import express from "express";
+import path from "path";
 import { config } from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan"
 import colors from "colors"
+import fileUpload from "express-fileupload"
+
 
 
 import bootcampRoutes from "./routes/v1/bootcamps.js";
@@ -21,10 +24,19 @@ const port = process.env.PORT || 8000;
 app.use(express.json())
 app.use(helmet())
 
-
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
+
+app.use(
+    fileUpload({
+        limits: { fileSize: 50 * 1024 * 1024 },
+    })
+);
+
+// set static folder
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.get("/", (req, res) => {
     res.send("Server is live!")
