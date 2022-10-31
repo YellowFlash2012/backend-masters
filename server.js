@@ -10,6 +10,7 @@ import fileUpload from "express-fileupload"
 
 import bootcampRoutes from "./routes/v1/bootcamps.js";
 import courseRoutes from "./routes/v1/courses.js";
+import userRoutes from "./routes/v1/users.js";
 
 import connectDB from "./config/db.js";
 import { errorHandler, notFound } from "./middlewares/error.js";
@@ -44,6 +45,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/bootcamps", bootcampRoutes);
 app.use("/api/v1/courses", courseRoutes);
+app.use("/api/v1/users", userRoutes);
 
 app.use(notFound)
 app.use(errorHandler)
