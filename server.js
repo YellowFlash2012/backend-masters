@@ -5,7 +5,7 @@ import helmet from "helmet";
 import morgan from "morgan"
 import colors from "colors"
 import fileUpload from "express-fileupload"
-
+import cookieParser from "cookie-parser";
 
 
 import bootcampRoutes from "./routes/v1/bootcamps.js";
@@ -24,6 +24,7 @@ const port = process.env.PORT || 8000;
 
 app.use(express.json())
 app.use(helmet())
+app.use(cookieParser())
 
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));

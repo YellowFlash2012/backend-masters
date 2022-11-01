@@ -16,7 +16,7 @@ export const userSignup = asyncHandler(async (req, res) => {
 
     const token = await user.createJWT();
 
-    res.status(201).json({ success: true, user, token });
+    res.status(201).json({ success: true, user:{id:user._id,name:user.name,email:user.email,role:user.role}, token });
 })
 
 // @desc    User login
@@ -43,5 +43,30 @@ export const userLogin = asyncHandler(async (req, res) => {
 
     const token = await user.createJWT();
 
-    res.status(200).json({success:true, user, token});
+    res.status(200).json({
+        success: true,
+        user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+        },
+        token,
+    });
 })
+
+// ***create cookie
+const sendCookie = (user, statusCode, res) => {
+    const token = await user.createJWT();
+
+    const options = {
+        expires: new Date(Date.now() + 9 * 24 * 60 * 60 * 1000),
+        httpOnly: true
+    };
+
+    if (process.env.NODE_ENV==="production") {
+        options.secure = true;
+    }
+
+    res.status(statusCode).cookie('token', token, options).json({success:true,token})
+}
