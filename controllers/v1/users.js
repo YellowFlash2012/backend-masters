@@ -4,6 +4,7 @@ import crypto from "crypto"
 
 import User from '../../models/User.js';
 import { sendEmail } from '../../utils/sendmail.js';
+import { rmSync } from 'fs';
 
 // @desc    User signup
 // @route   POST /api/v1/users
@@ -191,4 +192,63 @@ export const updateUserPw = asyncHandler(async (req, res) => {
         success: true,
         data:"Password was updated!"
     });
+})
+
+// *** admin only section
+// @desc    get all users
+// @route   GET /api/v1/users/
+// @access  Private/Admin
+export const getAllUsers = asyncHandler(async (req, res) => {
+    res.status(200).json(res.advancedRes)
+})
+
+// @desc    get one user
+// @route   GET /api/v1/users/:id
+// @access  Private/Admin
+export const getOneUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    res.status(200).json({
+        success: true,
+        data:user
+    })
+})
+
+// @desc    create new user
+// @route   POST /api/v1/users/
+// @access  Private/Admin
+export const addNewUserByAdmin = asyncHandler(async (req, res) => {
+    const user = await User.create(req.body);
+
+    res.status(201).json({
+        success: true,
+        data:user
+    })
+})
+
+// @desc    update user
+// @route   PUT /api/v1/users/
+// @access  Private/Admin
+export const updateUserByAdmin = asyncHandler(async (req, res) => {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators:true
+    });
+
+    res.status(201).json({
+        success: true,
+        data:user
+    })
+})
+
+// @desc    delete user
+// @route   DELETE /api/v1/users/
+// @access  Private/Admin
+export const deleteUserByAdmin = asyncHandler(async (req, res) => {
+    await User.findByIdAndDelete(req.params.id);
+
+    res.status(201).json({
+        success: true,
+        data:"User deleted!"
+    })
 })
