@@ -56,7 +56,7 @@ export const userLogin = asyncHandler(async (req, res) => {
 })
 
 // ***create cookie
-const sendCookie = (user, statusCode, res) => {
+const sendCookie = async (user, statusCode, res) => {
     const token = await user.createJWT();
 
     const options = {
