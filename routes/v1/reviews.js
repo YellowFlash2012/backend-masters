@@ -6,7 +6,7 @@ import {
     
     updateOneCourse,
 } from "../../controllers/v1/courses.js";
-import { addNewReview, getAllReviews, getOneReview } from "../../controllers/v1/reviews.js";
+import { addNewReview, deleteOneReview, getAllReviews, getOneReview, updateOneReview } from "../../controllers/v1/reviews.js";
 import advancedRes from "../../middlewares/advancedRes.js";
 import { admin, protect } from "../../middlewares/auth.js";
 import Course from "../../models/Course.js";
@@ -23,7 +23,7 @@ router.get(
 );
 router.get("/:id", getOneReview);
 router.post("/", protect, addNewReview);
-router.put("/:id", protect, admin, updateOneCourse);
-router.delete("/:id", protect, admin, deleteOneCourse);
+router.put("/:id", protect, updateOneReview);
+router.delete("/:id", protect, deleteOneReview);
 
 export default router;

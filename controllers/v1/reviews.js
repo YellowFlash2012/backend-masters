@@ -63,3 +63,44 @@ export const addNewReview = asyncHandler(async (req, res) => {
     });
 });
 
+// @desc    Update a review
+// @route   PUT /api/v1/reviews/:id
+// @access  Private
+export const updateOneReview = asyncHandler(async (req, res) => {
+    let review = await Review.findById(req.params.id);
+
+    if (!review) {
+        throw new Error(`No review found with the id of ${req.params.id}`);
+    }
+
+    // check if user is review creator
+    if (review.user.toString() !== req.user.id) {
+        throw new Error("You can NOT update someone else review!");
+    }
+
+    review = await Review.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+    });
+
+    res.status(201).json({ success: true, data: review });
+});
+
+// @desc    Delete a review
+// @route   DELETE /api/v1/reviews/:id
+// @access  Private
+export const deleteOneReview = asyncHandler(async (req, res) => {
+    const review = await Review.findById(req.params.id);
+
+    if (!review) {
+        throw new Error(`No course found with the id of ${req.params.id}`);
+    }
+
+    // check if user is review creator
+    if (review.user.toString() !== req.user.id) {
+        throw new Error("You can NOT delete someone else review!");
+    }
+
+    await course.remove();
+
+    res.status(200).json({ success: true });
+});
