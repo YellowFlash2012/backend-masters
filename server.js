@@ -6,7 +6,11 @@ import morgan from "morgan"
 import colors from "colors"
 import fileUpload from "express-fileupload"
 import cookieParser from "cookie-parser";
-
+import mongoSanitize from "express-mongo-sanitize"
+import xss from "xss-clean"
+import rateLimit from "express-rate-limit"
+import hpp from "hpp"
+import cors from "cors"
 
 import bootcampRoutes from "./routes/v1/bootcamps.js";
 import courseRoutes from "./routes/v1/courses.js";
@@ -24,8 +28,29 @@ const app = express();
 const port = process.env.PORT || 8000;
 
 app.use(express.json())
+
+// set security headers
 app.use(helmet())
 app.use(cookieParser())
+
+// sanitize data
+app.use(mongoSanitize())
+
+// prevent xss attack
+app.use(xss())
+
+// rate limiting (1 req/10minutes)
+const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, //10 mins
+    max:3
+})
+app.use(limiter)
+
+// prevent http param pollution
+app.use(hpp())
+
+app.use(cors())
+
 
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
