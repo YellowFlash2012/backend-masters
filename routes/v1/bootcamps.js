@@ -6,11 +6,13 @@ import { admin, protect } from "../../middlewares/auth.js";
 import Bootcamp from "../../models/Bootcamp.js";
 
 import courseRoutes from "./courses.js";
+import reviewRoutes from "./reviews.js"
 
 const router = express.Router();
 
 // ***re-route into other routes
 router.use("/:bootcampID/courses", courseRoutes);
+router.use("/:bootcampID/reviews", reviewRoutes);
 
 // ***bootcamps routes
 router.get("/", advancedRes(Bootcamp, 'courses'), getAllBootcamps)

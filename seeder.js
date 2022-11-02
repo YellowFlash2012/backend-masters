@@ -7,6 +7,8 @@ import colors from "colors"
 import connectDB from "./config/db.js"
 import Bootcamp from "./models/Bootcamp.js"
 import Course from "./models/Course.js";
+import User from "./models/User.js";
+import Review from "./models/Review.js";
 
 config()
 
@@ -19,6 +21,8 @@ const importData = async () => {
 
         await Bootcamp.deleteMany()
         await Course.deleteMany()
+        await User.deleteMany()
+        await Review.deleteMany()
 
         const bootcamps = JSON.parse(
             await readFile(new URL("./_data/bootcamps.json", import.meta.url))
@@ -27,9 +31,19 @@ const importData = async () => {
         const courses = JSON.parse(
             await readFile(new URL("./_data/courses.json", import.meta.url))
         );
+        
+        const users = JSON.parse(
+            await readFile(new URL("./_data/users.json", import.meta.url))
+        );
+        
+        const reviews = JSON.parse(
+            await readFile(new URL("./_data/reviews.json", import.meta.url))
+        );
 
         await Bootcamp.create(bootcamps);
         await Course.create(courses);
+        await User.create(users);
+        await Review.create(reviews);
 
         console.log('Data imported...'.green.inverse);
 
@@ -43,7 +57,9 @@ const importData = async () => {
 const deleteData = async () => {
     try {
         await Bootcamp.deleteMany();
-        await Course.deleteMany()
+        await Course.deleteMany();
+        await User.deleteMany();
+        await Review.deleteMany();
 
         console.log("Data destroyed...".red.inverse);
 

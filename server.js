@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser";
 import bootcampRoutes from "./routes/v1/bootcamps.js";
 import courseRoutes from "./routes/v1/courses.js";
 import userRoutes from "./routes/v1/users.js";
+import reviewRoutes from "./routes/v1/reviews.js";
 
 import connectDB from "./config/db.js";
 import { errorHandler, notFound } from "./middlewares/error.js";
@@ -47,6 +48,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/bootcamps", bootcampRoutes);
 app.use("/api/v1/courses", courseRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/reviews", reviewRoutes);
 
 app.use(notFound)
 app.use(errorHandler)
