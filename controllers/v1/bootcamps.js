@@ -9,7 +9,6 @@ import geocoder from "../../utils/geocoder.js";
 // @access  Public
 export const getAllBootcamps = asyncHandler(async (req, res) => {
     
-
     res.status(200).json(res.advancedRes);
 })
 
