@@ -129,7 +129,7 @@ export const uploadPhoto = asyncHandler( async (req, res) => {
     }
 
     // check file size
-    if (file.size > proces.env.max_file_size) {
+    if (file.size > process.env.max_file_size) {
         throw new Error(
             `File size should be less than ${proces.env.max_file_size}`
         );

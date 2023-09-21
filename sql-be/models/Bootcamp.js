@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes } from "sequelize";
+import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
 const Bootcamp = sequelize.define("Bootcamp", {
@@ -38,7 +38,7 @@ const Bootcamp = sequelize.define("Bootcamp", {
             allowNull: false,
         },
         coordinates: {
-            type: [DataTypes.NUMBER],
+            type: DataTypes.NUMBER,
             allowNull: false,
             indexedDB: "2dsphere",
         },
@@ -91,6 +91,9 @@ const Bootcamp = sequelize.define("Bootcamp", {
         defaultValue:false,
     },
 });
+
+Bootcamp.sync()
+
 const range = [1, 10]
 
 export default Bootcamp

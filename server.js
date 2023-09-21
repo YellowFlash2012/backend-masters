@@ -11,6 +11,7 @@ import xss from "xss-clean"
 import rateLimit from "express-rate-limit"
 import hpp from "hpp"
 import cors from "cors"
+import cookieParser from "cookie-parser";
 
 import bootcampRoutes from "./routes/v1/bootcamps.js";
 import courseRoutes from "./routes/v1/courses.js";
@@ -50,6 +51,9 @@ app.use(limiter)
 app.use(hpp())
 
 app.use(cors())
+
+// cookie-paerser config
+app.use(cookieParser)
 
 
 if (process.env.NODE_ENV === "development") {

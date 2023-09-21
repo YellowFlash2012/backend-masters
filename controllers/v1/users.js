@@ -19,9 +19,11 @@ export const userSignup = asyncHandler(async (req, res) => {
         role
     })
 
-    const token = await user.createJWT();
+    // const token = await user.createJWT();
 
-    res.status(201).json({ success: true, user:{id:user._id,name:user.name,email:user.email,role:user.role}, token });
+    // res.status(201).json({ success: true, user:{id:user._id,name:user.name,email:user.email,role:user.role}, token });
+
+    sendCookie(user, 201, res)
 })
 
 // @desc    User login
@@ -46,18 +48,20 @@ export const userLogin = asyncHandler(async (req, res) => {
         throw new Error("Invalid credentials!")
     }
 
-    const token = await user.createJWT();
+    // const token = await user.createJWT();
 
-    res.status(200).json({
-        success: true,
-        user: {
-            id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-        },
-        token,
-    });
+    // res.status(200).json({
+    //     success: true,
+    //     user: {
+    //         id: user._id,
+    //         name: user.name,
+    //         email: user.email,
+    //         role: user.role,
+    //     },
+    //     token,
+    // });
+
+    sendCookie(user, 200, res)
 })
 
 // ***create cookie

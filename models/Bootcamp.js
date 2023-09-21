@@ -151,7 +151,6 @@ bootcampSchema.pre('remove', async function (next) {
 // ***reverse populate with virtuals
 // courses refer to the nale of the Course field in the Bootcamp schema
 bootcampSchema.virtual('courses', {
-
     ref: 'Course',
     localField: '_id',
     foreignField: 'bootcamp',

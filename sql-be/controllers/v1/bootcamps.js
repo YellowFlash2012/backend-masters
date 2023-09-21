@@ -17,14 +17,14 @@ export const getOneBootcamp = ((req, res, next) => {
 // @desc    Create one bootcamp
 // @route   POST /api/v1/bootcamps
 // @access  Private/Admin
-export const createOneBootcamp = async((req, res, next) => { 
+export const createOneBootcamp = async(req, res, next) => { 
     const bootcamp = await Bootcamp.create(req.body);
 
     res.status(201).json({
         success: true,
         data:bootcamp
     })
-})
+}
 
 // @desc    Update one bootcamp
 // @route   PUT /api/v1/bootcamps/:id

@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
         select: false
         // select:false so that when we try to access user later on, password will not be part of the user data
     },
-    resetPaswordToken: String,
+    resetPasswordToken: String,
     resetPasswordExpire:Date
 }, { timestamps: true });
 
@@ -47,9 +47,9 @@ userSchema.pre('save', async function (next) {
 })
 
 // ***creating jwt
-userSchema.methods.createJWT=function () {
-    return jwt.sign({ id: this._id }, process.env.jwt_secret,{expiresIn:"9d"});
-}
+userSchema.methods.createJWT = function () {
+    return jwt.sign({ id: this._id }, process.env.jwt_secret, { expiresIn: "9d" });
+};
 
 // ***compare enteredPw with hashed pw
 userSchema.methods.matchPw = async function (enteredPw) {
