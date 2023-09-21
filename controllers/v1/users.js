@@ -87,7 +87,7 @@ export const forgotPw = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-        throw new Error("User with that email as not found!")
+        throw new Error("User with that email was not found!")
     }
 
     // get reset token

@@ -57,18 +57,21 @@ userSchema.methods.matchPw = async function (enteredPw) {
 };
 
 // *** generate and hash pw reset token
-userSchema.methods.getPwResetToken=async function () {
+userSchema.methods.getPwResetToken = async function () {
     // generate token
     const resetToken = crypto.randomBytes(19).toString('hex');
 
     // hash token and set to pwResetToken field
-    this.pwResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    this.resetPasswordToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
 
     // set expire
-    this.pwResetTokenExpire = Date.now() + 10 * 60 * 1000;
+    this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
     return resetToken;
-}
+};
 
 const User = mongoose.model("User", userSchema);
 
