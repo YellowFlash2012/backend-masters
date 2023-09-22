@@ -100,7 +100,7 @@ export const deleteOneReview = asyncHandler(async (req, res) => {
         throw new Error("You can NOT delete someone else review!");
     }
 
-    await course.remove();
+    await review.remove();
 
     res.status(200).json({ success: true });
 });

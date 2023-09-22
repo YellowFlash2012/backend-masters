@@ -98,7 +98,8 @@ export const forgotPw = asyncHandler(async (req, res) => {
     // create reset url
     const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/users/reset-pw/${resetToken}`;
 
-    const message = "You are receiving this email because you or someone else requested to reset the password. If you didn't make this request, kindly ignore this email";
+    const message =
+        `You are receiving this email because you or someone else requested to reset the password. If you didn't make this request, kindly ignore this email. Click on this link to reset your password ${resetUrl}`;
 
     try {
         await sendEmail({
@@ -112,8 +113,8 @@ export const forgotPw = asyncHandler(async (req, res) => {
             data: "Email dispatched",
         });
     } catch (error) {
-        user.pwResetToken = undefined;
-        user.pwResetTokenExpire = undefined;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
 
         await user.save({ validateBeforeSave: false });
 
@@ -137,8 +138,8 @@ export const resetPw = asyncHandler( async (req, res) => {
         .digest("hex");
 
     const user = await User.findOne({
-        pwResetToken,
-        pwResetTokenExpire:{$gt:Date.now()},
+        resetPasswordToken: pwResetToken,
+        resetPasswordExpire: { $gt: Date.now() },
     });
 
     if (!user) {
@@ -147,14 +148,15 @@ export const resetPw = asyncHandler( async (req, res) => {
 
     // set new pw
     user.password = req.body.password;
-    user.pwResetToken = undefined;
-    user.pwResetTokenExpire = undefined;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
 
     await user.save()
 
-    res.status(201).json({
-        success: true,
-    });
+    // res.status(201).json({
+    //     success: true,
+    // });
+    sendCookie(user, 201, res)
 })
 
 // @desc    update user details
@@ -173,7 +175,8 @@ export const updateUserDetails = asyncHandler(async (req, res) => {
 
     res.status(201).json({
         success: true,
-        data: "User details were updated!",
+        message:"User details were updated!",
+        data: user,
     });
 })
 
@@ -192,10 +195,12 @@ export const updateUserPw = asyncHandler(async (req, res) => {
 
     await user.save()
 
-    res.status(201).json({
-        success: true,
-        data:"Password was updated!"
-    });
+    // res.status(201).json({
+    //     success: true,
+    //     data:"Password was updated!"
+    // });
+
+    sendCookie(user, 201, res)
 })
 
 // *** admin only section
@@ -231,7 +236,7 @@ export const addNewUserByAdmin = asyncHandler(async (req, res) => {
 })
 
 // @desc    update user
-// @route   PUT /api/v1/users/
+// @route   PUT /api/v1/users/:id
 // @access  Private/Admin
 export const updateUserByAdmin = asyncHandler(async (req, res) => {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -246,7 +251,7 @@ export const updateUserByAdmin = asyncHandler(async (req, res) => {
 })
 
 // @desc    delete user
-// @route   DELETE /api/v1/users/
+// @route   DELETE /api/v1/users/:id
 // @access  Private/Admin
 export const deleteUserByAdmin = asyncHandler(async (req, res) => {
     await User.findByIdAndDelete(req.params.id);
